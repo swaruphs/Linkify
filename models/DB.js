@@ -1,6 +1,6 @@
 
 var mongoose = require('mongoose');
-var dbURI = process.env == DEV  ? 'mongodb://localhost/linkify' : ;
+var dbURI = process.env.MONGOHQ_URL  || 'mongodb://localhost/linkify'
 mongoose.connect(dbURI);
 
 /**
