@@ -18,7 +18,7 @@ router.post('/doLink', function(req, res){
             var next = result.next;
             var hash =  new hashids('link shortening app called linkify',5);
             var key = hash.encode(result.next);
-            var url = 'http://'+req.get('host')+'/'+key;
+            var url = req.protocol+'://'+req.get('host')+'/'+key;
             console.log(' hash url is '+url);
             insert_link(url,link, function(newLink){
                 res.json({'status':200, 'hash':newLink.generatedLink});
@@ -33,7 +33,7 @@ router.post('/doLink', function(req, res){
 
 router.get('/:id', function(req, res){
     var hex =  req.params.id;
-    var url = 'http://'+req.get('host')+'/'+hex;
+    var url = req.protocol+'://'+req.get('host')+'/'+hex;
     
     linkModel.findOne({generatedLink:url}, function (err, link) {
         if(!err){
@@ -57,7 +57,7 @@ router.get('/:id', function(req, res){
 router.get('/:id/clicks', function(req, res){
 
     var hex  = req.params.id;
-    var url = 'http://'+req.get('host')+'/'+hex;
+    var url = req.protocol+'://'+req.get('host')+'/'+hex;
     linkModel.findOne({generatedLink:url}, function(err, link){
         if(!err) {
             if(link != null) {
