@@ -1,7 +1,15 @@
 
 var mongoose = require('mongoose');
 var dbURI = process.env.MONGOHQ_URL  || 'mongodb://localhost/linkify'
-mongoose.connect(dbURI);
+
+mongoose.connect(dbURI, function(err, res){
+    if(err) {
+        console.log('error connecting to the database '+ dbURI + ' '+err);
+    }
+    else {
+        console.log('successfully connected to the database '+ dbURI + ' ' +res);
+    }
+});
 
 /**
  * Link Model
