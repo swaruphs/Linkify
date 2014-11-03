@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Linkify</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
+    <link rel="stylesheet" href="/stylesheets/bootstrap-responsive.css" />
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $('#div-error').fadeOut(0);
+            $("#link-form").submit(function () {
+
+                // Get the Login Name value and trim it
+                var name = $.trim($('#link').val());
+
+                // Check if empty of not
+                if (name  === '') {
+                    return false;
+                }
+                else {
+                    $.ajax({
+                        url: '/doLink',
+                        type: 'post',
+                        dataType: 'json',
+                        data: $('#link-form').serialize(),
+                        success: function(data) {
+                            var status = data.status;
+                            if(status == 200) {
+                                $('#link').val(data.hash);
+                            }
+                            else {
+                                var error = data.error;
+                                $("#div-error").text(data.error);
+                                $('#div-error').fadeIn(0, function(){
+
+                                }).fadeOut(3000, function(){
+
+                                });
+                                $('#link').val('');
+                            }
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+
+    </script>
+  </head>
+  <body style = "background-image: url('/images/wall.jpg')">
+  <div id = 'div-error' class="alert alert-error span2 offset4">
+
+  </div>
+      <div class="container-fluid">
+        <div class="row">
+            <div class="span12 offset3" style="text-align:center; margin: 0 auto;">
+                <form class="form-inline" role="form" method="POST" id="link-form" action="" novalidate="novalidate">
+                    <input  type="text" name ="link" id="link"/>
+                    <button class = "btn btn-primary" id ="btnlink" name="Get Link" value="Get Link">Get Link </button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </body>
+
+</html>
